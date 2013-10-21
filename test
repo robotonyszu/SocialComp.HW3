@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+
+open(F, "./5750tweetspam |");
+while(<F>) {
+  if ($_ =~ m|^([0-9]+)$|) {
+    my $id = $1;
+    my $result = `wget -O - "https://twitter.com/intent/user?user_id=$id" 2>&1`;
+
+    if ($result =~ m|Twitter \/ Account Suspended|) {
+      print "$id\tInvalid, already suspended\n";
+    } elsif ($result =~ m|ERROR 404: Not Found|) {
+      print "$id\tInvalid, does not exist\n";
+    } else {
+      print "$id\tValid\n";
+    }
+  } else {
+    my $line = $_;
+    chomp($line);
+    print "$line\tInvalid, unrecognized format\n";
+  }
+}
