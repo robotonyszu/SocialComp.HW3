@@ -1,0 +1,11 @@
+onsumer key: jzExA4kqvNMMrjwzFwDClA
+Consumer secret: va8CJBjAaiD1Am0aszBOUcXznM76nrmNoQ0OfoD63F8
+Request token URL: https://api.twitter.com/oauth/request_token
+Authorize URL: https://api.twitter.com/oauth/authorize
+Access token URL:  https://api.twitter.com/oauth/access_token
+
+
+Use the access token string as your "oauth_token" and the access token secret as your "oauth_token_secret" to sign requests with your own Twitter account. Do not share your oauth_token_secret with anyone.
+
+Access token  1315809169-S6aYuqVJaVNpKyTlMTXG3byHqL14NSWp6G1u9eH
+Access token secret yowEwXB1oGy8S0PzZ1zkPuw3M6AzZ7Mai5ZFXThKgMHs0
