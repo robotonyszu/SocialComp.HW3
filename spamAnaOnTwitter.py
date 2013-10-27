@@ -64,6 +64,18 @@ if __name__ == "__main__":
   *Methods:
   ---api.GetUser(user)
   ---api.GetFriends()
+  ---api.GetFollowers()
+  ---api.GetRepllies()
+  ---api.GetRetweeters()
+  ---api.GetRetweets()
+  ---api.GetUserRetweets()   
+  ---api.GetUserTimeLine()
+  ---api.GetUserSearch()
+  ---api.GetSearch()
+  ---api.GetTrendsCurrent() // Get the current top trending topics
+  ---api.GetTrendsWoeid()   // Return the top 1- trending topics for 
+                            // a specific WOEID
+  ---api.UsersLookup()      // Fetch extended information for this user
 
   *Class:
   User: id,name,screen_name,location
