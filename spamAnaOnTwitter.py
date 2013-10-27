@@ -32,6 +32,8 @@ def main():
     SEED_SIZE = 100
     seeds = set()
     api = initial()
+    f = open('seeds.dat','w')
+
     # return list of User objects
     users = api.GetFriends()
     for user in users:
@@ -39,11 +41,13 @@ def main():
     for user in seeds:
       friends = api.GetFriends(user_id=user.id)
       for friend in friends:
+        f.write(friend.id + '\t' + friend.name +'\t' + friend.screen_name+ '\d')
         seeds.add(friend)
         if(len(seeds) > SEED_SIZE):
           break
       if(len(seeds) > SEED_SIZE):
         break
+    f.close()
     print 'seed done'
 
 
@@ -71,7 +75,7 @@ if __name__ == "__main__":
   ---api.GetUserRetweets()   
   ---api.GetUserTimeLine()
   ---api.GetUserSearch()
-  ---api.GetSearch()
+  ---api.GetSearch()        // Return Status object
   ---api.GetTrendsCurrent() // Get the current top trending topics
   ---api.GetTrendsWoeid()   // Return the top 1- trending topics for 
                             // a specific WOEID
@@ -79,5 +83,8 @@ if __name__ == "__main__":
 
   *Class:
   User: id,name,screen_name,location
-
+  Status: contributors, coordinates, created_at, created_at_in_seconds,
+          favorited,favorite_count,id,lang,place,source,text,truncated,
+          location
+  
 '''
