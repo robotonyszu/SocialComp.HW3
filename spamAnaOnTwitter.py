@@ -32,28 +32,38 @@ def main():
     SEED_SIZE = 100
     seeds = set()
     api = initial()
+    trends = api.GetTrendsCurrent()
+    for trend in trends:
+        name = trend.url
+        print name
+
     # return list of User objects
-    users = api.GetFriends()
-    for user in users:
-      seeds.add(user)
-    for user in seeds:
-      friends = api.GetFriends(user_id=user.id)
-      for friend in friends:
-        seeds.add(friend)
-        if(len(seeds) > SEED_SIZE):
-          break
-      if(len(seeds) > SEED_SIZE):
-        break
-    print 'seed done'
-
-
-   # item = api.GetUser(screen_name = 'Barack Obama').AsDict()
-   # print item
-    results = api.GetFollowerIDs(screen_name = 'Barack Obama')
-    print results
-    for result in results:
-      item = api.GetUser(result).AsDict()
-      print item['id'], item['screen_name']
+    
+#     
+#     
+#     
+#     users = api.GetFriends()
+#     
+#     for user in users:
+#       seeds.add(user)
+#     for user in seeds:
+#       friends = api.GetFriends(user_id=user.id)
+#       for friend in friends:
+#         seeds.add(friend)
+#         if(len(seeds) > SEED_SIZE):
+#           break
+#       if(len(seeds) > SEED_SIZE):
+#         break
+#     print 'seed done'
+# 
+# 
+#    # item = api.GetUser(screen_name = 'Barack Obama').AsDict()
+#    # print item
+#     results = api.GetFollowerIDs(screen_name = 'Barack Obama')
+#     print results
+#     for result in results:
+#       item = api.GetUser(result).AsDict()
+#       print item['id'], item['screen_name']
 
 
 
