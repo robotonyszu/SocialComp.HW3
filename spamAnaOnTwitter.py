@@ -1,34 +1,77 @@
 #!/usr/bin/env python
 '''connect to Twitter and output user IDs that will be banned'''
 
+import time
+import logging
+import inspect
+import datetime
+    
 import twitter
 
-
+COMMAND_INTERVAL = 15
 suspicious_keywords = ['money', 'finance', 'mortgage', 'health', 'airline',
                        'download', 'adult', 'sex', 'music', 'game', 
                        'sell', 'buy']
 
 
-def initial():
+def initialize():
     #user infor for cs5750
     api = twitter.Api(consumer_key='otyqFeLTbZiRjlC3KhKZA',
                    consumer_secret='s4EjBZgvaTkEyRyARigkRjCzLnhlfe63WYgNgPpO4',
                    access_token_key='2151667861-MfgX0cunxe9S6lgTYo1mFBpxIWtcDG1zmNLbJcR',
                    access_token_secret='oeYIUHT6px0U5Euu9bZ9iNhorJuwcgGwDF5lwlCER4317',
                    debugHTTP=True)
+    logging.basicConfig(filename='5750tweetspam.log',level=logging.ERROR)
     return api
 
-def main():
+def handle_twitter_error(errs):
+    for err in errs:
+        logging.error('%s error: %s' % (inspect.stack()[1][3], err.message()))
+    time.sleep(COMMAND_INTERVAL)
 
-    api = initial()
+
+    
+def get_users_search(api, keyword):
+    while True:
+        try:
+            seeds = api.GetUsersSearch(keyword, count=30)
+            time.sleep(COMMAND_INTERVAL)
+            return seeds
+        except twitter.TwitterError as errs:
+            handle_twitter_error(errs)
+
+def get_followers(api, id):
+    try:
+        followers = api.GetFollowerIDs(id, count=5000, total_count=5000)
+        time.sleep(COMMAND_INTERVAL)
+        return followers
+    except twitter.TwitterError as errs:
+        handle_twitter_error(errs)
+        return []
+        
+def get_user(api, id):
+    try:
+        user = api.GetUser(id)
+        time.sleep(COMMAND_INTERVAL)
+        return user
+    except twitter.TwitterError as errs:
+        handle_twitter_error(errs)    
+            
+def main():
+    api = initialize()
     
     for keyword in suspicious_keywords:
-        seeds = api.GetUsersSearch(keyword, count=30)
+        current_time = datetime.datetime.now()
+        seeds = get_users_search(api, keyword)
         for seed in seeds:
-            followers = api.GetFollowerIDs(seed.id, count=100)
-            for follower in followers():
-                print follower
-    
+            followers = get_followers(api, seed.id)
+            print len(followers)
+            print '======================================================================'
+            for follower in followers:
+                user = get_user(api, follower)
+                if current_time - user.GetCreatedAt() < datetime.timedelta(day=7):
+                    print user.GetScreenName(),
+                    print user.GetCreatedAt()
     
     
     #f = open('seeds.dat','w')
