@@ -17,13 +17,14 @@ SUSPICIOUS_KEYWORDS = ['money', 'finance', 'mortgage', 'health', 'airline',
                        'free', 'porn', 'dating']
 KEYWORDS_COUNT = len(SUSPICIOUS_KEYWORDS)
 
-
+# initialize this twitter API
+# @Author: Zhuoli
 def initialize():
     #user infor for cs5750
     api = twitter.Api(consumer_key='otyqFeLTbZiRjlC3KhKZA',
                    consumer_secret='s4EjBZgvaTkEyRyARigkRjCzLnhlfe63WYgNgPpO4',
-                   access_token_key='2151667861-MfgX0cunxe9S6lgTYo1mFBpxIWtcDG1zmNLbJcR',
-                   access_token_secret='oeYIUHT6px0U5Euu9bZ9iNhorJuwcgGwDF5lwlCER4317',
+                   access_token_key='2151667861-soLJni1pLpJ4TcLW6BJFSOiCGex9EaCGJWXZzSg',
+                   access_token_secret='XmfzG6AubTEkYucRQ0kf10bxCfwT2AM9DkVbWTsnI8oeR',
                    debugHTTP=True)
     logging.basicConfig(filename='5750tweetspam.log',level=logging.ERROR)
     return api
@@ -87,7 +88,7 @@ def main():
                 user = get_user(api, follower)
                 if user != None and is_user_spam(user):
                     print user
-    
+   
 
 
 
