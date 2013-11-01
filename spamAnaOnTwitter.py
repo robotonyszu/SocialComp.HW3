@@ -68,9 +68,9 @@ def is_user_spam(user):
     created_time = time.mktime(time.strptime(user.GetCreatedAt(), "%a %b %d %H:%M:%S +0000 %Y"))
     relative_created_time = datetime.timedelta(seconds = (current_time - created_time))
     is_spam &= relative_created_time < datetime.timedelta(days=7)
-    is_spam &= user.GetStatusesCount() > 5
-    is_spam &= user.GetFriendsCount() > 10
-    is_spam &= not user.GetLocation()
+    #is_spam &= user.GetStatusesCount() > 5
+    #is_spam &= user.GetFriendsCount() > 10
+    #is_spam &= not user.GetLocation()
 
     #print user.GetProfileBackgroundImageUrl()
     return is_spam
@@ -87,7 +87,7 @@ def main():
             for follower in followers:
                 user = get_user(api, follower)
                 if user != None and is_user_spam(user):
-                    print user
+                    print user.name
    
 
 
