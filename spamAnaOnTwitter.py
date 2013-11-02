@@ -68,9 +68,15 @@ def is_user_spam(user):
     created_time = time.mktime(time.strptime(user.GetCreatedAt(), "%a %b %d %H:%M:%S +0000 %Y"))
     relative_created_time = datetime.timedelta(seconds = (current_time - created_time))
     is_spam &= relative_created_time < datetime.timedelta(days=7)
+<<<<<<< HEAD
 #     is_spam &= user.GetStatusesCount() > 5
 #     is_spam &= user.GetFriendsCount() > 10
 #     is_spam &= not user.GetLocation()
+=======
+    #is_spam &= user.GetStatusesCount() > 5
+    #is_spam &= user.GetFriendsCount() > 10
+    #is_spam &= not user.GetLocation()
+>>>>>>> 20cb68f00ecc9e74ad9577092606a7116dcaddef
 
     #print user.GetProfileBackgroundImageUrl()
     return is_spam
@@ -78,8 +84,11 @@ def is_user_spam(user):
             
 def main():
     api = initialize()
+<<<<<<< HEAD
     spammers = set()
     normal_user = set()
+=======
+>>>>>>> 20cb68f00ecc9e74ad9577092606a7116dcaddef
     while True:
         keyword_index = random.randrange(0, KEYWORDS_COUNT)
         seeds = get_users_search(api, SUSPICIOUS_KEYWORDS[keyword_index])
@@ -87,6 +96,7 @@ def main():
             followers = get_followers(api, seed.id)
             for follower in followers:
                 user = get_user(api, follower)
+<<<<<<< HEAD
                 user_id = user.GetId()
                 if not user_id in normal_user and not user_id in spammers:
                     if user != None and is_user_spam(user):
@@ -96,6 +106,13 @@ def main():
                     else:
                         normal_user.add(user_id)
    
+=======
+                f = open('spams.dat','a') 
+                if user != None and is_user_spam(user):
+                    print user.name
+                    f.write(user.name)
+                f.close()
+>>>>>>> 20cb68f00ecc9e74ad9577092606a7116dcaddef
 
 
 
