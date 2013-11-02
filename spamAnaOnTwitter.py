@@ -78,7 +78,6 @@ def is_user_spam(user):
             
 def main():
     api = initialize()
-    
     while True:
         keyword_index = random.randrange(0, KEYWORDS_COUNT)
         seeds = get_users_search(api, SUSPICIOUS_KEYWORDS[keyword_index])
@@ -86,9 +85,11 @@ def main():
             followers = get_followers(api, seed.id)
             for follower in followers:
                 user = get_user(api, follower)
+                f = open('spams.dat','a') 
                 if user != None and is_user_spam(user):
                     print user.name
-   
+                    f.write(user.name)
+                f.close()
 
 
 
