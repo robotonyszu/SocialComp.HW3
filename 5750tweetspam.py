@@ -79,7 +79,6 @@ def is_user_spam(user):
             
 def main():
     api = initialize()
-    
     while True:
         keyword_index = random.randrange(0, KEYWORDS_COUNT)
         tweets = api.GetSearch(SUSPICIOUS_KEYWORDS[keyword_index], count = 5000)
