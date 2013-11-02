@@ -9,7 +9,7 @@ import random
     
 import twitter
 
-COMMAND_INTERVAL = 5
+COMMAND_INTERVAL = 15
 SUSPICIOUS_KEYWORDS = ['money', 'finance', 'mortgage', 'health', 'airline',
                        'download', 'adult', 'sex', 'music', 'game', 'following',
                        'sell', 'buy', 'diet', 'jewelery', 'electronics', 'vehicle',
@@ -17,13 +17,14 @@ SUSPICIOUS_KEYWORDS = ['money', 'finance', 'mortgage', 'health', 'airline',
                        'free', 'porn', 'dating']
 KEYWORDS_COUNT = len(SUSPICIOUS_KEYWORDS)
 
-
+# initialize this twitter API
+# @Author: Zhuoli
 def initialize():
     #user infor for cs5750
     api = twitter.Api(consumer_key='otyqFeLTbZiRjlC3KhKZA',
                    consumer_secret='s4EjBZgvaTkEyRyARigkRjCzLnhlfe63WYgNgPpO4',
-                   access_token_key='2151667861-MfgX0cunxe9S6lgTYo1mFBpxIWtcDG1zmNLbJcR',
-                   access_token_secret='oeYIUHT6px0U5Euu9bZ9iNhorJuwcgGwDF5lwlCER4317',
+                   access_token_key='2151667861-soLJni1pLpJ4TcLW6BJFSOiCGex9EaCGJWXZzSg',
+                   access_token_secret='XmfzG6AubTEkYucRQ0kf10bxCfwT2AM9DkVbWTsnI8oeR',
                    debugHTTP=True)
     logging.basicConfig(filename='5750tweetspam.log',level=logging.ERROR)
     return api
@@ -67,9 +68,9 @@ def is_user_spam(user):
     created_time = time.mktime(time.strptime(user.GetCreatedAt(), "%a %b %d %H:%M:%S +0000 %Y"))
     relative_created_time = datetime.timedelta(seconds = (current_time - created_time))
     is_spam &= relative_created_time < datetime.timedelta(days=7)
-    is_spam &= user.GetStatusesCount() > 5
-    is_spam &= user.GetFriendsCount() > 10
-    is_spam &= not user.GetLocation()
+#     is_spam &= user.GetStatusesCount() > 5
+#     is_spam &= user.GetFriendsCount() > 10
+#     is_spam &= not user.GetLocation()
 
     #print user.GetProfileBackgroundImageUrl()
     return is_spam
@@ -77,7 +78,8 @@ def is_user_spam(user):
             
 def main():
     api = initialize()
-    
+    spammers = set()
+    normal_user = set()
     while True:
         keyword_index = random.randrange(0, KEYWORDS_COUNT)
         seeds = get_users_search(api, SUSPICIOUS_KEYWORDS[keyword_index])
@@ -85,9 +87,15 @@ def main():
             followers = get_followers(api, seed.id)
             for follower in followers:
                 user = get_user(api, follower)
-                if user != None and is_user_spam(user):
-                    print user
-    
+                user_id = user.GetId()
+                if not user_id in normal_user and not user_id in spammers:
+                    if user != None and is_user_spam(user):
+                        print user_id
+                        print user
+                        spammers.add(user_id)
+                    else:
+                        normal_user.add(user_id)
+   
 
 
 
