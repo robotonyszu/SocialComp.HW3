@@ -81,7 +81,7 @@ def setPost(api,idlist,id):
     text = ''
     while(len(idlist) > 0):
       item = idlist.pop()
-      text = text + '\t' + str(item)
+      text = text + ' ' + str(item)
     idlist.append(id)
     api.PostUpdates(text)
   else:
@@ -101,19 +101,12 @@ def main():
                 user_id = user.GetId()
                 if not user_id in normal_user and not user_id in spammers:
                     if user != None and is_user_spam(user):
+                        setPost(api,idlist,user_id)
                         print user_id
-                        print user
                         spammers.add(user_id)
                     else:
                         normal_user.add(user_id)
    
-                f = open('spams.dat','a') 
-                if user != None and is_user_spam(user):
-                    setPost(api,idlist,user_id)
-                    print user.name
-                    f.write(user_id)
-                f.close()
-
 
 
 
@@ -136,6 +129,8 @@ if __name__ == "__main__":
   ---api.GetTrendsWoeid()   // Return the top 1- trending topics for 
                             // a specific WOEID
   ---api.UsersLookup()      // Fetch extended information for this user
+                            // returns a list of twitter.User objects for 
+                            // the requested users
 
   *Class:
   User: id,name,screen_name,location
