@@ -4,10 +4,9 @@
 import time
 import datetime
 import logging
-
 import random
-    
 import twitter
+from dateutil.parser import parser
 
 COMMAND_INTERVAL = 15
 SUSPICIOUS_KEYWORDS = ['money', 'finance', 'mortgage', 'health', 'airline',
@@ -119,6 +118,30 @@ def text2list(text):
     except ValueError as errs:
       pass
   return texts
+
+#@Author: Zhuoli
+def filterSpamAccount(api,spam_id_list):
+  spams = []
+  while len(spam_id_list) > 0:
+    spam = spam_id_list.pop()
+    if isSuspicious(api,spam):
+      spams.append(spam)
+  spam_id_list.extend(spams)
+
+#@Author: Zhuoli
+def isSuspicious(api,spam_id):
+  SUSPICIOUS_DAY = 7
+  p = parser()
+  user = api.GetUser(user_id = spam_id)
+  status = user.Status
+  creation = p.parse(status.created_at)
+  current = time.localtime()
+  dif = (current[0] - creation.year) * 365 +(current[1] - creation.month) * 30 +(current[2] - creation.day)
+  if dif > SUSPICIOUS_DAY:
+    return False
+  else:
+    return True
+
 
 def main():
     CS5750_ID = 2151667861
