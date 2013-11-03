@@ -96,6 +96,8 @@ def getTweets(api,user_id):
       spam_id_list.extend(sublist)
   return spam_id_list
 #@Author: Zhuoli
+#GIVEN: A [lain text text
+#RETURN: TRUE if it is a list of id
 def isListOfID(text):
   items = text.split(' ')
   for item in items:
@@ -107,14 +109,16 @@ def isListOfID(text):
       return False
   return True
 #@Author: Zhuoli
+#GIVEN: a plain text tweet
+#RETURN: A list of account id number
 def text2list(text):
-  list = []
+  texts = []
   for item in text.split(' '):
     try:
-      list.append(int(item))
+      texts.append(int(item))
     except ValueError as errs:
       pass
-  return list
+  return texts
 
 def main():
     CS5750_ID = 2151667861
