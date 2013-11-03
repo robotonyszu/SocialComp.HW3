@@ -86,7 +86,38 @@ def setPost(api,idlist,id):
     api.PostUpdates(text)
   else:
     idlist.append(id)
+#@Author: Zhuoli
+def getTweets(api,user_id):
+  spam_id_list = []
+  statuses = api.GetUserTimeline(user_id)
+  for statue in statuses:
+    if isListOfID(statue.text):
+      sublist = text2list(statue.text)
+      spam_id_list.extend(sublist)
+  return spam_id_list
+#@Author: Zhuoli
+def isListOfID(text):
+  items = text.split(' ')
+  for item in items:
+    try:
+      if len(item) != 10:
+        return False
+      int(item)
+    except ValueError as errs:
+      return False
+  return True
+#@Author: Zhuoli
+def text2list(text):
+  list = []
+  for item in text.split(' '):
+    try:
+      list.append(int(item))
+    except ValueError as errs:
+      pass
+  return list
+
 def main():
+    CS5750_ID = 2151667861
     api = initialize()
     spammers = set()
     normal_user = set()
